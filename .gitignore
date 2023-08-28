@@ -1,0 +1,12 @@
+# basics
+*.DS_Store
+
+# pycharm
+venv
+.idea
+__pycache__
+
+
+# custom
+test.mp4
+YOLO-weights
