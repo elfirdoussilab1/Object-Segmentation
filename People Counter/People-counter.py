@@ -35,8 +35,10 @@ tracker = Sort(max_age= 20, min_hits= 3, iou_threshold = 0.3)
 # The line that detects people to count
 limits = [150, 370, 700, 370]
 
-# list of indices of people encountered:
-list_idx = []
+# list of people going up with the escalator
+list_idx_up = []
+# list of people going down with the escalator
+list_idx_down = []
 
 while True:
     # Reading image on the video
@@ -81,17 +83,28 @@ while True:
         # finding the center of each rectangle (person)
         cx, cy = x1 + w//2 , y1 + h//2
         cv2.circle(img, center = (cx, cy), radius = 5, color = (255, 0, 255))
-        # Counting if the center is in a region
 
-        if limits[0] < cx < limits[2] and limits[1] - 10 < cy < limits[1] + 10:
+        # Counting people going up
+        if limits[0] < cx < limits[2] and limits[1] < cy < limits[1] + 10:
             # If id is not in list
-            if list_idx.count(id) == 0:
-                list_idx.append(id)
+            if list_idx_down.count(id) == 0 and list_idx_up.count(id) == 0:
+                list_idx_up.append(id)
 
                 # Turing the line to green when a car passes through it
                 cv2.line(img, limits[:2], limits[2:], color=(0, 255, 0))
 
-    cvzone.putTextRect(img, text = f"Count : {len(list_idx)}", pos = (50, 50))
+        # Counting people going down
+        if limits[0] < cx < limits[2] and limits[1] - 10 < cy < limits[1]:
+            # If id is not in list up nor in down
+            if list_idx_down.count(id) == 0 and list_idx_up.count(id) == 0:
+                list_idx_down.append(id)
+
+                # Turing the line to green when a car passes through it
+                cv2.line(img, limits[:2], limits[2:], color=(0, 255, 0))
+
+
+    cvzone.putTextRect(img, text = f"Up : {len(list_idx_up)}", pos = (50, 50))
+    cvzone.putTextRect(img, text=f"Down : {len(list_idx_down)}", pos=(50, 110))
 
 
     # displaying image
