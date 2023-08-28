@@ -57,5 +57,5 @@ while True:
 
 
     # displaying image
-    cv2.imshow("Image", img)
+    cv2.imshow("Webcam", img)
     cv2.waitKey(1) # 1 ms delay

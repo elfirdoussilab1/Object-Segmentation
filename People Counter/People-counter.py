@@ -1,11 +1,14 @@
 from ultralytics import YOLO
 import cv2
 import cvzone
+import numpy as np
 from sort import *
 
+# In this project, we will count the number of people traversing the escalator in the video: people.mp4
+
 # Colors: RBG: R (0, 0, 255) / G (0, 255, 0) / B (255, 0, 0)
-# Importing the video: cars.mp4
-cap = cv2.VideoCapture('../Videos/cars.mp4')
+# Working with the video people.mp4
+cap = cv2.VideoCapture('../Videos/people.mp4')
 
 # Loading the model
 model = YOLO("../YOLO-weights/yolov8n.pt")
@@ -21,7 +24,6 @@ classNames = ["person", "bicycle", "car", "motorbike", "airplane", "bus", "train
               "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
               "teddy bear", "hair drier", "toothbrush"
               ]
-count = 0
 
 # Importing the mask
 mask = cv2.imread("mask.png")
@@ -30,10 +32,10 @@ mask = cv2.imread("mask.png")
 # max_age : limit of frames that is gone and still recognize it as a region
 tracker = Sort(max_age= 20, min_hits= 3, iou_threshold = 0.3)
 
-limits = [400, 297, 673, 297]
+# The line that detects people to count
+limits = [150, 370, 700, 370]
 
-# list of indices of cars encountered:
-# we cannot just use previous index because many cars can be counted at the same time
+# list of indices of people encountered:
 list_idx = []
 
 while True:
@@ -60,11 +62,8 @@ while True:
             conf = round(box.conf[0].item(), 2)
             # Class name
             cls = classNames[int(box.cls[0].item())]
-            if cls == "car" and conf > 0.3:
-                # displaying the class if it's a car
-                #cvzone.putTextRect(img, text=cls + "  " + str(conf) , pos=(max(0, x1), max(40, y1)), scale=1,
-                                   #thickness=2)
-                #cvzone.cornerRect(img, bbox=(x1, y1, w, h), l=8, rt = 5)
+            if cls == "person" and conf > 0.3:
+                # Adding the observation to the list of detections
                 current_array = np.array([x1, y1, x2, y2, conf])
                 detections = np.vstack((detections, current_array))
 
@@ -79,12 +78,12 @@ while True:
         w, h = x2 - x1, y2 - y1
         cvzone.cornerRect(img, bbox=(x1, y1, w, h), l=5, rt=1, colorR=(255, 0, 0))
 
-        # finding the center of each square
+        # finding the center of each rectangle (person)
         cx, cy = x1 + w//2 , y1 + h//2
         cv2.circle(img, center = (cx, cy), radius = 5, color = (255, 0, 255))
         # Counting if the center is in a region
 
-        if limits[0] < cx < limits[2] and limits[1] - 20 < cy < limits[1] + 20:
+        if limits[0] < cx < limits[2] and limits[1] - 10 < cy < limits[1] + 10:
             # If id is not in list
             if list_idx.count(id) == 0:
                 list_idx.append(id)
@@ -96,5 +95,5 @@ while True:
 
 
     # displaying image
-    cv2.imshow("Cars", img)
+    cv2.imshow("People", img)
     cv2.waitKey(1) # 1 ms delay

@@ -4,7 +4,7 @@ import cvzone
 import math
 
 # Connect to the webcam
-cap = cv2.VideoCapture('Videos/motorbikes.mp4')
+cap = cv2.VideoCapture('../Videos/motorbikes.mp4')
 
 # Loading the model
 model = YOLO("../YOLO-weights/yolov8n.pt")
@@ -51,5 +51,5 @@ while True:
 
 
     # displaying image
-    cv2.imshow("Image", img)
+    cv2.imshow("Video", img)
     cv2.waitKey(1) # 1 ms delay
