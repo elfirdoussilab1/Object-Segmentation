@@ -6,6 +6,7 @@ To be able to run all these experiments, you should install all the required lib
 
 ```sh
 requirements.txt
+```
 
 ## Car Counter:
 In the car counter file, we implement an algorithm that counts how many different cars traverse a road. For this purpose, we use 
