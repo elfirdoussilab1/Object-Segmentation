@@ -86,7 +86,7 @@ while True:
 
         # Counting people going up
         if limits[0] < cx < limits[2] and limits[1] < cy < limits[1] + 10:
-            # If id is not in list
+            # If id is not in list up nor in down
             if list_idx_down.count(id) == 0 and list_idx_up.count(id) == 0:
                 list_idx_up.append(id)
 
