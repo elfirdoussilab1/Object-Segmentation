@@ -5,7 +5,7 @@ import cv2
 model = YOLO('../YOLO-weights/yolov8l.pt')
 
 # Object segmentation results
-results = model("../images/3.png", show = True)
+results = model("../images/1.png", show = True)
 
 # Stopping the process to see the image classified
 cv2.waitKey(0)

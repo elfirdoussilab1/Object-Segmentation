@@ -1,7 +1,6 @@
 from ultralytics import YOLO
 import cv2
 import cvzone
-import numpy as np
 from sort import *
 
 # In this project, we will count the number of people traversing the escalator in the video: people.mp4

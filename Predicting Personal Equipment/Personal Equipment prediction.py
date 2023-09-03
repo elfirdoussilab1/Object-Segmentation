@@ -1,7 +1,6 @@
 from ultralytics import YOLO
 import cv2
 import cvzone
-import math
 
 # Connect to the webcam
 cap = cv2.VideoCapture('../Videos/ppe-2.mp4')
